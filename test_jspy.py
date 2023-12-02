@@ -1,4 +1,3 @@
-from pythonmonkey import require as js_require
 from globals import *
 
 import os
@@ -29,7 +28,7 @@ def tell_light_to(action):
         case _: context.call(setLightMood, 255, 255, 255)
 
 def main():
-    tell_light_to(ACTION.WAKE_UP)
+    tell_light_to(ACTION.SOOTH)
 
 
 if __name__ == "__main__":
