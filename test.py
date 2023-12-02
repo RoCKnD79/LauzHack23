@@ -1,6 +1,15 @@
-from pythonmonkey import require as js_require
-
-js_lib = js_require('./index.js')
+from pynput.keyboard import Key, Listener
 
 
-js_lib.sooth()
+def on_press(key):
+    print('{0} pressed'.format(key))
+
+
+def on_release(key):
+    print('{0} release'.format(key))
+    if key == Key.esc:
+        return False
+
+
+with Listener(on_press=on_press, on_release=on_release) as listener:
+    listener.join()
