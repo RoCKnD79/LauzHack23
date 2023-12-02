@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "litra": "^4.4.4"
+    "litra": "git+https://github.com/lnovelli/litra-lx.git"
   }
 }
