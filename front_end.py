@@ -31,6 +31,7 @@ class App(customtkinter.CTk):
 
         self.select_image = customtkinter.CTkImage(Image.open(current_path + "\images\select_icon.png"))
         self.edit_image = customtkinter.CTkImage(Image.open(current_path + "\images\edit_icon.png"))
+        self.mouse_image = customtkinter.CTkImage(Image.open(current_path + "\images\mouse_icon.png"))
         self.settings_image = customtkinter.CTkImage(Image.open(current_path + "\images\settings_icon.png"))
         #self.auto_icon = customtkinter.CTkImage(Image.open(current_path + "\images\auto_icon.png"))
         self.game_icon = customtkinter.CTkImage(Image.open(current_path + "\images\game_icon.png"))
@@ -42,17 +43,27 @@ class App(customtkinter.CTk):
         self.sidebar_frame = customtkinter.CTkFrame(self, width=40, corner_radius=0, fg_color="#212225")
         self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
         self.sidebar_frame.grid_rowconfigure(4, weight=1)
+
         self.logo_label = customtkinter.CTkLabel(self.sidebar_frame, text=" ", image=self.logi_image) #, fg_color="#000000", bg_color="#000000",)
         self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 20))
-        self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event, fg_color="#212225", image= self.select_image, text_color="#1388E5")
+
+        self.sidebar_button_1 = customtkinter.CTkButton(self.sidebar_frame, command=self.mode_button_event, fg_color="#212225", image= self.select_image, text_color="#1388E5")
         self.sidebar_button_1.grid(row=1, column=0, padx=(30, 100), pady=(60,20))
         self.sidebar_button_1.configure(text="Mode   ", font=customtkinter.CTkFont(size=25, weight="bold"))
-        self.sidebar_button_2 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event, fg_color="#212225", image= self.edit_image)
+
+        self.sidebar_button_2 = customtkinter.CTkButton(self.sidebar_frame, command=self.mode_button_event, fg_color="#212225", image= self.mouse_image)
         self.sidebar_button_2.grid(row=2, column=0, padx=(30, 100), pady=20)
-        self.sidebar_button_2.configure(text="Custom", font=customtkinter.CTkFont(size=25, weight="bold", ))
-        self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event, fg_color="#212225", image=self.settings_image)
+        self.sidebar_button_2.configure(text="Devices", font=customtkinter.CTkFont(size=25, weight="bold", ))
+
+        self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=self.mode_button_event, fg_color="#212225", image= self.edit_image)
         self.sidebar_button_3.grid(row=3, column=0, padx=(30, 100), pady=20)
-        self.sidebar_button_3.configure(text="Option  ", font=customtkinter.CTkFont(size=25, weight="bold"))
+        self.sidebar_button_3.configure(text="Custom", font=customtkinter.CTkFont(size=25, weight="bold", ))
+
+        self.sidebar_button_4 = customtkinter.CTkButton(self.sidebar_frame, command=self.mode_button_event, fg_color="#212225", image=self.settings_image)
+        self.sidebar_button_4.grid(row=4, column=0, padx=(30, 100), pady=20)
+        self.sidebar_button_4.configure(text="Option  ", font=customtkinter.CTkFont(size=25, weight="bold"))
+
+
         # self.appearance_mode_label = customtkinter.CTkLabel(self.sidebar_frame, text="Appearance Mode:", anchor="w")
         # self.appearance_mode_label.grid(row=5, column=0, padx=20, pady=(10, 0))
         # self.appearance_mode_optionemenu = customtkinter.CTkOptionMenu(self.sidebar_frame, values=["Light", "Dark", "System"],
@@ -65,35 +76,35 @@ class App(customtkinter.CTk):
         # self.scaling_optionemenu.grid(row=8, column=0, padx=20, pady=(10, 20))
 
         # create sidebar frame with widgets
-        self.main_frame = customtkinter.CTkFrame(self, width=40, corner_radius=0,  fg_color="#000000")
-        self.main_frame.grid(row=0, column=1, rowspan=4, sticky="nsew",ipadx=70 ,ipady=70)
+        self.main_frame = customtkinter.CTkFrame(self, width=40, corner_radius=0, fg_color="transparent")
+        self.main_frame.grid(row=0, column=1, rowspan=1, sticky="nsew",ipadx=70 ,ipady=0)
         self.main_frame.grid_rowconfigure(4, weight=1)
         # self.logo_label = customtkinter.CTkLabel(self.main_frame, text="Menu", font=customtkinter.CTkFont(size=20, weight="bold"))
         # self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
 
-        self.main_button_1 = customtkinter.CTkButton(self.main_frame, command=self.sidebar_button_event, width=150, height=150, image=self.game_icon)
-        self.main_button_1.grid(row=0, column=0, padx=40, pady=20)
+        self.main_button_1 = customtkinter.CTkButton(self.main_frame, command=self.auto_button_event, width=150, height=150, image=self.game_icon)
+        self.main_button_1.grid(row=0, column=0, padx=(20, 10), pady=10)
         self.main_button_1.configure(text="Auto", font=customtkinter.CTkFont(size=15, weight="bold"))
 
-        self.main_button_2 = customtkinter.CTkButton(self.main_frame, command=self.sidebar_button_event, width=150, height=150, image=self.game_icon,fg_color="#212225")
-        self.main_button_2.grid(row=0, column=1, padx=40, pady=20)
+        self.main_button_2 = customtkinter.CTkButton(self.main_frame, command=self.game_button_event, width=150, height=150, image=self.game_icon,fg_color="#212225")
+        self.main_button_2.grid(row=0, column=1, padx=10, pady=10)
         self.main_button_2.configure(text="Game", font=customtkinter.CTkFont(size=15, weight="bold"))
 
-        self.main_button_3 = customtkinter.CTkButton(self.main_frame, command=self.sidebar_button_event, width=150, height=150, image=self.work_icon ,fg_color="#212225")
-        self.main_button_3.grid(row=0, column=2, padx=40, pady=20)
+        self.main_button_3 = customtkinter.CTkButton(self.main_frame, command=self.work_button_event, width=150, height=150, image=self.work_icon ,fg_color="#212225")
+        self.main_button_3.grid(row=0, column=2, padx=10, pady=10)
         self.main_button_3.configure(text="Work", font=customtkinter.CTkFont(size=15, weight="bold"))
 
-        self.main_button_4 = customtkinter.CTkButton(self.main_frame, command=self.sidebar_button_event, width=150, height=150, image=self.sleep_icon ,fg_color="#212225")
-        self.main_button_4.grid(row=0, column=2, padx=40, pady=20)
+        self.main_button_4 = customtkinter.CTkButton(self.main_frame, command=self.sleep_button_event, width=150, height=150, image=self.sleep_icon ,fg_color="#212225")
+        self.main_button_4.grid(row=1, column=0, padx=(20, 10), pady=10)
         self.main_button_4.configure(text="Sleep", font=customtkinter.CTkFont(size=15, weight="bold"))
 
-        self.main_button_5 = customtkinter.CTkButton(self.main_frame, command=self.sidebar_button_event, width=150, height=150, image=self.relax_icon, fg_color="#212225")
-        self.main_button_5.grid(row=1, column=0, padx=40, pady=20)
+        self.main_button_5 = customtkinter.CTkButton(self.main_frame, command=self.relax_button_event, width=150, height=150, image=self.relax_icon, fg_color="#212225")
+        self.main_button_5.grid(row=1, column=1, padx=10, pady=10)
         self.main_button_5.configure(text="Relax", font=customtkinter.CTkFont(size=15, weight="bold"))
 
-        self.main_button_6 = customtkinter.CTkButton(self.main_frame, command=self.sidebar_button_event, width=150, height=150,fg_color="#212225") #, hover_color="#212225")
-        self.main_button_6.grid(row=1, column=1, padx=40, pady=20)
-        self.main_button_6.configure(text="+", font=customtkinter.CTkFont(size=120, weight="bold"))
+        self.main_button_7 = customtkinter.CTkButton(self.main_frame, command=self.new_button_event, width=150, height=150,fg_color="#000000") #, hover_color="#212225")
+        self.main_button_7.grid(row=1, column=2, padx=10, pady=10)
+        self.main_button_7.configure(text="+", font=customtkinter.CTkFont(size=120, weight="bold"))
 
         # create main entry and button
         # self.entry = customtkinter.CTkEntry(self, placeholder_text="CTkEntry")
@@ -140,62 +151,51 @@ class App(customtkinter.CTk):
         # self.radio_button_3 = customtkinter.CTkRadioButton(master=self.radiobutton_frame, variable=self.radio_var, value=2)
         # self.radio_button_3.grid(row=3, column=2, pady=10, padx=20, sticky="n")
 
-        # create slider and progressbar frame
-        # self.slider_progressbar_frame = customtkinter.CTkFrame(self, fg_color="transparent")
-        # self.slider_progressbar_frame.grid(row=1, column=1, padx=(20, 0), pady=(20, 0), sticky="nsew")
+        #create slider and progressbar frame
+        self.slider_progressbar_frame = customtkinter.CTkFrame(self, fg_color="transparent")
+        self.slider_progressbar_frame.grid(row=0, column=2, sticky="nsew")
         # self.slider_progressbar_frame.grid_columnconfigure(0, weight=1)
         # self.slider_progressbar_frame.grid_rowconfigure(4, weight=1)
-        # self.seg_button_1 = customtkinter.CTkSegmentedButton(self.slider_progressbar_frame)
-        # self.seg_button_1.grid(row=0, column=0, padx=(20, 10), pady=(10, 10), sticky="ew")
-        # self.progressbar_1 = customtkinter.CTkProgressBar(self.slider_progressbar_frame)
-        # self.progressbar_1.grid(row=1, column=0, padx=(20, 10), pady=(10, 10), sticky="ew")
-        # self.progressbar_2 = customtkinter.CTkProgressBar(self.slider_progressbar_frame)
-        # self.progressbar_2.grid(row=2, column=0, padx=(20, 10), pady=(10, 10), sticky="ew")
-        # self.slider_1 = customtkinter.CTkSlider(self.slider_progressbar_frame, from_=0, to=1, number_of_steps=4)
-        # self.slider_1.grid(row=3, column=0, padx=(20, 10), pady=(10, 10), sticky="ew")
-        # self.slider_2 = customtkinter.CTkSlider(self.slider_progressbar_frame, orientation="vertical")
-        # self.slider_2.grid(row=0, column=1, rowspan=5, padx=(10, 10), pady=(10, 10), sticky="ns")
-        # self.progressbar_3 = customtkinter.CTkProgressBar(self.slider_progressbar_frame, orientation="vertical")
-        # self.progressbar_3.grid(row=0, column=2, rowspan=5, padx=(10, 20), pady=(10, 10), sticky="ns")
 
-        # create scrollable frame
-        # self.scrollable_frame = customtkinter.CTkScrollableFrame(self, label_text="CTkScrollableFrame")
-        # self.scrollable_frame.grid(row=1, column=2, padx=(20, 0), pady=(20, 0), sticky="nsew")
-        # self.scrollable_frame.grid_columnconfigure(0, weight=1)
-        # self.scrollable_frame_switches = []
-        # for i in range(100):
-        #     switch = customtkinter.CTkSwitch(master=self.scrollable_frame, text=f"CTkSwitch {i}")
-        #     switch.grid(row=i, column=0, padx=10, pady=(0, 20))
-        #     self.scrollable_frame_switches.append(switch)
+        self.mood_label = customtkinter.CTkLabel(self.slider_progressbar_frame, text="Mood", font=customtkinter.CTkFont(size=25, weight="bold"))
+        self.mood_label.grid(row=0, column=0, padx=(0,0), pady=(20,20))
 
-        # create checkbox and switch frame
-        # self.checkbox_slider_frame = customtkinter.CTkFrame(self)
-        # self.checkbox_slider_frame.grid(row=1, column=3, padx=(20, 20), pady=(20, 0), sticky="nsew")
-        # self.checkbox_1 = customtkinter.CTkCheckBox(master=self.checkbox_slider_frame)
-        # self.checkbox_1.grid(row=1, column=0, pady=(20, 0), padx=20, sticky="n")
-        # self.checkbox_2 = customtkinter.CTkCheckBox(master=self.checkbox_slider_frame)
-        # self.checkbox_2.grid(row=2, column=0, pady=(20, 0), padx=20, sticky="n")
-        # self.checkbox_3 = customtkinter.CTkCheckBox(master=self.checkbox_slider_frame)
-        # self.checkbox_3.grid(row=3, column=0, pady=20, padx=20, sticky="n")
+        self.progressbar_1 = customtkinter.CTkProgressBar(self.slider_progressbar_frame, orientation="horizontal", width=130, height=12, progress_color="#4354be")
+        self.progressbar_1.grid(row=1, column=1, padx=(0, 20))
+        self.progressbar_2 = customtkinter.CTkProgressBar(self.slider_progressbar_frame, orientation="horizontal", width=130, height=12, progress_color="#0995e6")
+        self.progressbar_2.grid(row=2, column=1, padx=(0, 20))
+        self.progressbar_3 = customtkinter.CTkProgressBar(self.slider_progressbar_frame, orientation="horizontal", width=130, height=12, progress_color="#33cc33")
+        self.progressbar_3.grid(row=3, column=1, padx=(0, 20))
+        self.progressbar_4 = customtkinter.CTkProgressBar(self.slider_progressbar_frame, orientation="horizontal", width=130, height=12, progress_color="#d6cb22")
+        self.progressbar_4.grid(row=4, column=1, padx=(0, 20))
+        self.progressbar_5 = customtkinter.CTkProgressBar(self.slider_progressbar_frame, orientation="horizontal", width=130, height=12, progress_color="#ff0000")
+        self.progressbar_5.grid(row=5, column=1, pady = (0,50), padx=(0, 20))
 
-        # set default values
-        #self.sidebar_button_3.configure(state="disabled", text="Disabled CTkButton")
-        #self.checkbox_3.configure(state="disabled")
-        #self.checkbox_1.select()
-        # self.scrollable_frame_switches[0].select()
-        # self.scrollable_frame_switches[4].select()
-        # self.radio_button_3.configure(state="disabled")
-        #self.appearance_mode_optionemenu.set("Dark")
-        #self.scaling_optionemenu.set("100%")
-        #self.optionmenu_1.set("CTkOptionmenu")
-        #self.combobox_1.set("CTkComboBox")
-        # self.slider_1.configure(command=self.progressbar_2.set)
-        # self.slider_2.configure(command=self.progressbar_3.set)
-        # self.progressbar_1.configure(mode="indeterminnate")
-        # self.progressbar_1.start()
-        #self.textbox.insert("0.0", "CTkTextbox\n\n" + "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.\n\n" * 20)
-        # self.seg_button_1.configure(values=["CTkSegmentedButton", "Value 2", "Value 3"])
-        # self.seg_button_1.set("Value 2")
+        self.happy_label    = customtkinter.CTkLabel(self.slider_progressbar_frame, text="Sleepy     ", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.happy_label.grid(row=1, column=0,)
+        self.angry_labe2    = customtkinter.CTkLabel(self.slider_progressbar_frame, text="Calmness", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.angry_labe2.grid(row=2, column=0,)
+        self.stressed_labe3 = customtkinter.CTkLabel(self.slider_progressbar_frame, text="Happy     ", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.stressed_labe3.grid(row=3, column=0,)
+        self.sleepy_labe4   = customtkinter.CTkLabel(self.slider_progressbar_frame, text="Neutral   ", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.sleepy_labe4.grid(row=4, column=0,)
+        self.sleepy_labe5   = customtkinter.CTkLabel(self.slider_progressbar_frame, text="Angry     ", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.sleepy_labe5.grid(row=5, column=0,pady = (0,50))
+
+        # self.statistic_frame = customtkinter.CTkFrame(self, fg_color="transparent")
+        # self.statistic_frame.grid(row=1, column=6, sticky="nsew")
+
+        self.taping_speed_label = customtkinter.CTkLabel(self.slider_progressbar_frame, text="Typing Speed", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.taping_speed_label.grid(row=6, column=0, padx=0, pady=(0, 0))
+        self.taping_speed_value = customtkinter.CTkLabel(self.slider_progressbar_frame, text="0", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.taping_speed_value.grid(row=6, column=1, padx=0)
+
+        self.average_error_label = customtkinter.CTkLabel(self.slider_progressbar_frame, text="Average Error", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.average_error_label.grid(row=7, column=0, padx=0)
+        self.average_error_value = customtkinter.CTkLabel(self.slider_progressbar_frame, text="0", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.average_error_value.grid(row=7, column=1, padx=0)
+
+
 
     def open_input_dialog_event(self):
         dialog = customtkinter.CTkInputDialog(text="Type in a number:", title="CTkInputDialog")
@@ -208,8 +208,66 @@ class App(customtkinter.CTk):
         new_scaling_float = int(new_scaling.replace("%", "")) / 100
         customtkinter.set_widget_scaling(new_scaling_float)
 
-    def sidebar_button_event(self):
+    def mode_button_event(self):
+        #self.main_frame.configure()
+        pass
+
+    def statistic_button_event(self):
         print("sidebar_button click")
+
+
+
+    def auto_button_event(self):
+        self.main_button_1.configure(fg_color="#1388E5")
+        self.main_button_2.configure(fg_color="#212225")
+        self.main_button_3.configure(fg_color="#212225")
+        self.main_button_4.configure(fg_color="#212225")
+        self.main_button_5.configure(fg_color="#212225")
+
+
+    def game_button_event(self):
+        self.main_button_1.configure(fg_color="#212225")
+        self.main_button_2.configure(fg_color="#1388E5")
+        self.main_button_3.configure(fg_color="#212225")
+        self.main_button_4.configure(fg_color="#212225")
+        self.main_button_5.configure(fg_color="#212225")
+
+
+    def work_button_event(self):
+        self.main_button_1.configure(fg_color="#212225")
+        self.main_button_2.configure(fg_color="#212225")
+        self.main_button_3.configure(fg_color="#1388E5")
+        self.main_button_4.configure(fg_color="#212225")
+        self.main_button_5.configure(fg_color="#212225")
+
+
+    def sleep_button_event(self):
+        self.main_button_1.configure(fg_color="#212225")
+        self.main_button_2.configure(fg_color="#212225")
+        self.main_button_3.configure(fg_color="#212225")
+        self.main_button_4.configure(fg_color="#1388E5")
+        self.main_button_5.configure(fg_color="#212225")
+
+
+    def relax_button_event(self):
+        self.main_button_1.configure(fg_color="#212225")
+        self.main_button_2.configure(fg_color="#212225")
+        self.main_button_3.configure(fg_color="#212225")
+        self.main_button_4.configure(fg_color="#212225")
+        self.main_button_5.configure(fg_color="#1388E5")
+
+
+    def new_button_event(self):
+        # self.main_button_1.configure(fg_color="#212225")
+        # self.main_button_2.configure(fg_color="#212225")
+        # self.main_button_3.configure(fg_color="#212225")
+        # self.main_button_4.configure(fg_color="#212225")
+        # self.main_button_5.configure(fg_color="#212225")
+        # self.main_button_6.configure(fg_color="#1388E5")
+        pass
+
+        
+
 
 
 if __name__ == "__main__":
