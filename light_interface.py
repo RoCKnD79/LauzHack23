@@ -22,7 +22,6 @@ function setZoneRGB(zone, R, G, B) {
 }
 ''' % os.path.join(os.path.dirname(__file__),'node_modules'))
 
-MAX_COLOR_VAL = 255
 
 def setLightMood(R, G, B):
     context.call('setLightMood', R, G, B)
@@ -38,69 +37,74 @@ def tell_light_to(action):
         case ACTION.ANGER: setLightMood(255, 0, 0)
         case _: setLightMood(255, 255, 255)
 
-def AHHH():
-    for i in range(10):
-        tell_light_to(None)
-        time.sleep(0.01)
+
+class LitraController():
+
+    def __init__(self):
+        self.state = STATE.IDLE
+
+    def AHHH(self):
+        for i in range(10):
+            tell_light_to(None)
+            time.sleep(0.01)
+            tell_light_to(ACTION.ANGER)
+            time.sleep(0.1)
+
+    def energize(self):
+        while(self.state == STATE.AWAKEN):
+            # orange
+            self.fade(242, 112, 4, 1, self.state)
+            # yellow
+            self.fade(255, 192, 0, 1, self.state)
+
+    def blue_focus(self):
+        while(self.state == STATE.WORK):
+            # blue
+            self.fade(41, 134, 204, 1, self.state)
+
+    def relax(self):
+        while(self.state == STATE.RELAX):
+            # green
+            self.fade(0, 255, 0, 1, self.state)
+
+    def arrow_focus(self, R, G, B):
+        for i in range(7):
+            zone = i + 1
+            setZoneRGB(zone, R, G, B)
+
+    def splash(self):
         tell_light_to(ACTION.ANGER)
-        time.sleep(0.1)
-
-def fade(R, G, B, period):
-    if(period <= 0): 
-        raise Exception("fading period cannot be <= 0")
+        time.sleep(0.05)
+        tell_light_to(None)
     
-    min_ratio = 0.1
-    max_ratio = 0.9
-    transitions = 100
-    transition_period = period/(transitions)
+    def fade(self, R, G, B, period, in_state):
+        if(period <= 0): 
+            raise Exception("fading period cannot be <= 0")
+        
+        min_ratio = 0.1
+        max_ratio = 0.9
+        transitions = 100
+        transition_period = period/(transitions)
 
-    # increase color intensity
-    ratio = min_ratio
-    while(ratio < max_ratio):
-        ratio += transition_period
-        setLightMood(ratio * R, ratio * G, ratio * B)
+        # increase color intensity
+        ratio = min_ratio
+        while(ratio < max_ratio and in_state == self.state):
+            ratio += transition_period
+            setLightMood(ratio * R, ratio * G, ratio * B)
 
-    # decrease color intensity
-    while(ratio > min_ratio):
-        ratio -= transition_period
-        setLightMood(ratio * R, ratio * G, ratio * B)
+        # decrease color intensity
+        while(ratio > min_ratio and in_state == self.state):
+            ratio -= transition_period
+            setLightMood(ratio * R, ratio * G, ratio * B)
 
-
-def energize():
-    while(True):
-        # orange
-        fade(242, 112, 4, 1)
-        # yellow
-        fade(255, 192, 0, 1)
-
-def blue_focus():
-    while(True):
-        # blue
-        fade(41, 134, 204, 1)
-
-def calm_down():
-    while(True):
-        # green
-        fade(0, 255, 0, 1)
-
-def arrow_focus(R, G, B):
-    for i in range(7):
-        zone = i + 1
-        setZoneRGB(zone, R, G, B)
-
-def splash():
-    tell_light_to(ACTION.ANGER)
-    time.sleep(0.05)
-    tell_light_to(None)
-
-def main():
+#def main():
     #tell_light_to(ACTION.WAKE_UP)
     #energize()
     #blue_focus()
     #setZoneRGB(6, 0, 0, 255)
     #AHHH()
-    calm_down()
+    #calm_down()
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

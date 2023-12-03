@@ -5,6 +5,9 @@ import customtkinter
 from PIL import Image
 import os
 
+from light_interface import *
+from threading import Thread
+
 
 customtkinter.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark", "Light"
 #customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
@@ -14,6 +17,8 @@ customtkinter.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark",
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
+
+        self.litra_ctrller = LitraController()
 
         # configure window
         self.title("LogiMood")
@@ -208,6 +213,10 @@ class App(customtkinter.CTk):
         self.main_button_3.configure(fg_color="#1388E5")
         self.main_button_4.configure(fg_color="#212225")
         self.main_button_5.configure(fg_color="#212225")
+
+        self.litra_ctrller.state = STATE.WORK
+        Thread(target = self.litra_ctrller.blue_focus, args=()).start()
+
         self.display_work_mode()
 
 
@@ -217,6 +226,7 @@ class App(customtkinter.CTk):
         self.main_button_3.configure(fg_color="#212225")
         self.main_button_4.configure(fg_color="#1388E5")
         self.main_button_5.configure(fg_color="#212225")
+
         self.display_sleep_mode()
 
 
@@ -226,6 +236,10 @@ class App(customtkinter.CTk):
         self.main_button_3.configure(fg_color="#212225")
         self.main_button_4.configure(fg_color="#212225")
         self.main_button_5.configure(fg_color="#1388E5")
+
+        self.litra_ctrller.state = STATE.RELAX
+        Thread(target = self.litra_ctrller.relax, args=()).start()
+
         self.display_relax_mode()
 
 
