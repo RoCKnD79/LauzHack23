@@ -24,6 +24,8 @@ MAX_NUMBER_OF_SPEED = 100
 speeds = []
 averagePressingSpeed = 0
 
+transitionTime = 0
+
 #typing speed
 
 TYPING_TIMEOUT = 1 #in s
@@ -74,12 +76,22 @@ def on_release(key):
     removeMultyPress(key)
     #print("released")
 
-    global wasReleased, currentPress, speed
+    global wasReleased, currentPress, speed, transitionTime
     wasReleased = True
 
     speed = time.time() - currentPress
+    transitionTime += speed
 
     addNewPresSpeed(speed)
+    
+    if (transitionTime >= 5):
+        if(0.05 < averagePressingSpeed and averagePressingSpeed < 0.3):
+            litra_ctrller.state = STATE.RELAX
+            Thread(target = litra_ctrller.relax, args=()).start()
+
+        else:
+            litra_ctrller.state = STATE.IDLE
+            tell_light_to(None)
 
     #global averageError, averagePressingSpeed, currentWordLength, numberOfWords, numberOFErrors
     #print(str(averageError) + "   " + str(numberOfWords) + "   " + str(numberOFErrors) + "   "+ str(averagePressingSpeed) + "   " + str(currentWordLength))

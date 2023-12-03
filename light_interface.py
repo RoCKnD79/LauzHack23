@@ -43,6 +43,7 @@ class LitraController():
     def __init__(self):
         self.state = STATE.IDLE
 
+    # blink between red and white 
     def AHHH(self):
         for i in range(10):
             tell_light_to(None)
@@ -72,6 +73,8 @@ class LitraController():
             zone = i + 1
             setZoneRGB(zone, R, G, B)
 
+    # blink between red and white once
+    # called when the keyboard is agressively hit
     def splash(self):
         tell_light_to(ACTION.ANGER)
         time.sleep(0.05)
