@@ -8,6 +8,7 @@ import os
 from light_interface import *
 from threading import Thread
 
+import keyboard_input
 
 customtkinter.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark", "Light"
 #customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
@@ -18,7 +19,9 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.litra_ctrller = LitraController()
+        self.litra_ctrller = keyboard_input.litra_ctrller
+
+        Thread(target = keyboard_input.keyboard_thread, args=()).start()
 
         # configure window
         self.title("LogiMood")
@@ -201,6 +204,8 @@ class App(customtkinter.CTk):
         self.main_button_4.configure(fg_color="#212225")
         self.main_button_5.configure(fg_color="#212225")
         self.display_auto_mode()
+
+        self.litra_ctrller.state = STATE.CUSTOM
 
 
     def game_button_event(self):
