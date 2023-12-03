@@ -5,3 +5,4 @@ pip3 install packaging
 pip install pillow
 python3 -m pip install Pillow
 python3 -m pip install pynput
+python3 -m pip install numpy 

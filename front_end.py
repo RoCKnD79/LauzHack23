@@ -17,6 +17,7 @@ class App(customtkinter.CTk):
         # configure window
         self.title("LogiMood")
         self.geometry(f"{1100}x{580}")
+        self.configure(bg_color="#000000", fg_color="#000000")
 
         self._fg_color ="#000000"
         self.iconbitmap("logimood_icon.ico")
@@ -75,36 +76,45 @@ class App(customtkinter.CTk):
         #                                                        command=self.change_scaling_event)
         # self.scaling_optionemenu.grid(row=8, column=0, padx=20, pady=(10, 20))
 
+        # create scrollable frame
+        self.scrollable_frame = customtkinter.CTkScrollableFrame(self, bg_color="#000000", fg_color="transparent", height=50)
+        self.scrollable_frame.grid(row=0, column=1, padx=(0,10), sticky="nsew")
+        #self.scrollable_frame.grid_columnconfigure(0, weight=1)
+
         # create sidebar frame with widgets
-        self.main_frame = customtkinter.CTkFrame(self, width=40, corner_radius=0, fg_color="transparent")
-        self.main_frame.grid(row=0, column=1, rowspan=1, sticky="nsew",ipadx=70 ,ipady=0)
-        self.main_frame.grid_rowconfigure(4, weight=1)
+        # self.main_frame = customtkinter.CTkFrame(self, width=40, corner_radius=0, fg_color="transparent")
+        # self.main_frame.grid(row=0, column=1, rowspan=1, sticky="nsew",ipadx=70 ,ipady=0)
+        # self.main_frame.grid_rowconfigure(4, weight=1)
         # self.logo_label = customtkinter.CTkLabel(self.main_frame, text="Menu", font=customtkinter.CTkFont(size=20, weight="bold"))
         # self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
 
-        self.main_button_1 = customtkinter.CTkButton(self.main_frame, command=self.auto_button_event, width=150, height=150, image=self.game_icon)
+        self.main_button_1 = customtkinter.CTkButton(self.scrollable_frame, command=self.auto_button_event, width=150, height=150, image=self.game_icon)
         self.main_button_1.grid(row=0, column=0, padx=(20, 10), pady=10)
         self.main_button_1.configure(text="Auto", font=customtkinter.CTkFont(size=15, weight="bold"))
-
-        self.main_button_2 = customtkinter.CTkButton(self.main_frame, command=self.game_button_event, width=150, height=150, image=self.game_icon,fg_color="#212225")
+        
+        self.main_button_2 = customtkinter.CTkButton(self.scrollable_frame, command=self.game_button_event, width=150, height=150, image=self.game_icon,fg_color="#212225")
         self.main_button_2.grid(row=0, column=1, padx=10, pady=10)
         self.main_button_2.configure(text="Game", font=customtkinter.CTkFont(size=15, weight="bold"))
 
-        self.main_button_3 = customtkinter.CTkButton(self.main_frame, command=self.work_button_event, width=150, height=150, image=self.work_icon ,fg_color="#212225")
+        self.main_button_3 = customtkinter.CTkButton(self.scrollable_frame, command=self.work_button_event, width=150, height=150, image=self.work_icon ,fg_color="#212225")
         self.main_button_3.grid(row=0, column=2, padx=10, pady=10)
         self.main_button_3.configure(text="Work", font=customtkinter.CTkFont(size=15, weight="bold"))
 
-        self.main_button_4 = customtkinter.CTkButton(self.main_frame, command=self.sleep_button_event, width=150, height=150, image=self.sleep_icon ,fg_color="#212225")
+        self.main_button_4 = customtkinter.CTkButton(self.scrollable_frame, command=self.sleep_button_event, width=150, height=150, image=self.sleep_icon ,fg_color="#212225")
         self.main_button_4.grid(row=1, column=0, padx=(20, 10), pady=10)
         self.main_button_4.configure(text="Sleep", font=customtkinter.CTkFont(size=15, weight="bold"))
 
-        self.main_button_5 = customtkinter.CTkButton(self.main_frame, command=self.relax_button_event, width=150, height=150, image=self.relax_icon, fg_color="#212225")
+        self.main_button_5 = customtkinter.CTkButton(self.scrollable_frame, command=self.relax_button_event, width=150, height=150, image=self.relax_icon, fg_color="#212225")
         self.main_button_5.grid(row=1, column=1, padx=10, pady=10)
         self.main_button_5.configure(text="Relax", font=customtkinter.CTkFont(size=15, weight="bold"))
 
-        self.main_button_7 = customtkinter.CTkButton(self.main_frame, command=self.new_button_event, width=150, height=150,fg_color="#000000") #, hover_color="#212225")
+        self.main_button_7 = customtkinter.CTkButton(self.scrollable_frame, command=self.new_button_event, width=150, height=150,fg_color="#000000") #, hover_color="#212225")
         self.main_button_7.grid(row=1, column=2, padx=10, pady=10)
         self.main_button_7.configure(text="+", font=customtkinter.CTkFont(size=120, weight="bold"))
+        
+        self.main_button_8 = customtkinter.CTkButton(self.scrollable_frame, command=self.new_button_event, width=150, height=150,fg_color="#000000") #, hover_color="#212225")
+        self.main_button_8.grid(row=2, column=0, padx=10, pady=10)
+        self.main_button_8.configure(text=" ", font=customtkinter.CTkFont(size=120, weight="bold"), state="disable")
 
         # create main entry and button
         # self.entry = customtkinter.CTkEntry(self, placeholder_text="CTkEntry")
@@ -152,7 +162,7 @@ class App(customtkinter.CTk):
         # self.radio_button_3.grid(row=3, column=2, pady=10, padx=20, sticky="n")
 
         #create slider and progressbar frame
-        self.slider_progressbar_frame = customtkinter.CTkFrame(self, fg_color="transparent")
+        self.slider_progressbar_frame = customtkinter.CTkFrame(self, fg_color="#000000", bg_color="transparent")
         self.slider_progressbar_frame.grid(row=0, column=2, sticky="nsew")
         # self.slider_progressbar_frame.grid_columnconfigure(0, weight=1)
         # self.slider_progressbar_frame.grid_rowconfigure(4, weight=1)
@@ -180,7 +190,7 @@ class App(customtkinter.CTk):
         self.sleepy_labe4   = customtkinter.CTkLabel(self.slider_progressbar_frame, text="Neutral   ", font=customtkinter.CTkFont(size=15, weight="bold"))
         self.sleepy_labe4.grid(row=4, column=0,)
         self.sleepy_labe5   = customtkinter.CTkLabel(self.slider_progressbar_frame, text="Angry     ", font=customtkinter.CTkFont(size=15, weight="bold"))
-        self.sleepy_labe5.grid(row=5, column=0,pady = (0,50))
+        self.sleepy_labe5.grid(row=5, column=0,pady = (0,20))
 
         # self.statistic_frame = customtkinter.CTkFrame(self, fg_color="transparent")
         # self.statistic_frame.grid(row=1, column=6, sticky="nsew")
@@ -188,12 +198,12 @@ class App(customtkinter.CTk):
         self.taping_speed_label = customtkinter.CTkLabel(self.slider_progressbar_frame, text="Typing Speed", font=customtkinter.CTkFont(size=15, weight="bold"))
         self.taping_speed_label.grid(row=6, column=0, padx=0, pady=(0, 0))
         self.taping_speed_value = customtkinter.CTkLabel(self.slider_progressbar_frame, text="0", font=customtkinter.CTkFont(size=15, weight="bold"))
-        self.taping_speed_value.grid(row=6, column=1, padx=0)
+        self.taping_speed_value.grid(row=6, column=1, padx=0, pady=(0, 0))
 
         self.average_error_label = customtkinter.CTkLabel(self.slider_progressbar_frame, text="Average Error", font=customtkinter.CTkFont(size=15, weight="bold"))
-        self.average_error_label.grid(row=7, column=0, padx=0)
+        self.average_error_label.grid(row=7, column=0, padx=0, pady=(0, 0))
         self.average_error_value = customtkinter.CTkLabel(self.slider_progressbar_frame, text="0", font=customtkinter.CTkFont(size=15, weight="bold"))
-        self.average_error_value.grid(row=7, column=1, padx=0)
+        self.average_error_value.grid(row=7, column=1, padx=0, pady=(0, 0))
 
 
 
