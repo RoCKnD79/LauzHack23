@@ -4,14 +4,18 @@ from pynput.mouse import Controller
 import time
 import numpy as np
 
-from light_interface import *
+import light_interface
 from threading import Thread
+
+import colorsys
+
+
 
 #not used yet
 #mouse = Controller()
 
 #light interface
-litra_ctrller = LitraController()
+litra_ctrller = light_interface.LitraController()
 
 #only update one input
 wasReleased = True
@@ -29,7 +33,7 @@ transitionTime = 0
 #typing speed
 
 TYPING_TIMEOUT = 1 #in s
-MAX_NUMBER_OF_TYPING_SPEED = 100
+MAX_NUMBER_OF_TYPING_SPEED = 20
 typingSpeeds = []
 averageTypingSpeed = 0
 
@@ -71,12 +75,11 @@ def on_press(key):
     if key == Key.backspace :
         detectError()
 
-   
+step = 0
 def on_release(key):
     removeMultyPress(key)
-    #print("released")
 
-    global wasReleased, currentPress, speed, transitionTime
+    global wasReleased, currentPress, speed, transitionTime, step
     wasReleased = True
 
     speed = time.time() - currentPress
@@ -84,18 +87,31 @@ def on_release(key):
 
     addNewPresSpeed(speed)
     
-    if (transitionTime >= 5):
-        if(0.05 < averagePressingSpeed and averagePressingSpeed < 0.3):
-            litra_ctrller.state = STATE.RELAX
-            Thread(target = litra_ctrller.relax, args=()).start()
+    if (step == 5):
+        # if(0.05 < averagePressingSpeed and averagePressingSpeed < 0.3):
+        #     litra_ctrller.state = STATE.RELAX
+        #     Thread(target = litra_ctrller.relax, args=()).start()
 
-        else:
-            litra_ctrller.state = STATE.IDLE
-            tell_light_to(None)
+        # else:
+        #     litra_ctrller.state = STATE.IDLE
+        #     tell_light_to(None)
+        
+        #min 0.2 max .05
+        colors = colorsys.hsv_to_rgb(2 * (averageTypingSpeed), 1, 1)
+        light_interface.setLightMood(round(colors[0] * 255), round(colors[1] * 255), round(colors[2] * 255))
+        # light_interface.custom_b = round(colors[2] * 255)
+        # light_interface.custom_g = round(colors[1] * 255)
+        # light_interface.custom_r = round(colors[0] * 255)
+        # litra_ctrller.state = light_interface.STATE.CUSTOM
+        # litra_ctrller.custom_rgb()
+        step = 0
+    else :
+        step += 1
+
 
     #global averageError, averagePressingSpeed, currentWordLength, numberOfWords, numberOFErrors
     #print(str(averageError) + "   " + str(numberOfWords) + "   " + str(numberOFErrors) + "   "+ str(averagePressingSpeed) + "   " + str(currentWordLength))
-
+    print(averageTypingSpeed)
     if key == Key.esc:
         return False
 
@@ -181,5 +197,8 @@ def removeMultyPress(newKey):
     if newKey in keyCurrentlyPress :
         keyCurrentlyPress.remove(newKey)
 
-with Listener(on_press=on_press, on_release=on_release) as listener:
-    listener.join()
+def keyboard_thread():
+    with Listener(on_press=on_press, on_release=on_release) as listener:
+        listener.join()
+
+

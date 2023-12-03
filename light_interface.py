@@ -29,12 +29,19 @@ def setLightMood(R, G, B):
 def setZoneRGB(zone, R, G, B):
     context.call('setZoneRGB', zone, R, G, B)
 
+#custom values
+cutom_r = 0
+cutom_g = 0
+cutom_b = 0
+
 def tell_light_to(action):
+    global cutom_r, cutom_g, cutom_b
     match action:
         case ACTION.MOTIVATE: setLightMood(241, 194, 50)
         case ACTION.WAKE_UP: setLightMood(41, 134, 204)
         case ACTION.SOOTH: setLightMood(188, 139, 145)
         case ACTION.ANGER: setLightMood(255, 0, 0)
+        case ACTION.CUSTOM: setLightMood(cutom_r, cutom_g, cutom_b)
         case _: setLightMood(255, 255, 255)
 
 
@@ -67,6 +74,14 @@ class LitraController():
         while(self.state == STATE.RELAX):
             # green
             self.fade(0, 255, 0, 1, self.state)
+
+    def custom_rgb(self):
+        global custom_r, custom_g, custom_b
+        print(custom_r, custom_g, custom_b)
+        setLightMood(cutom_r, cutom_g, cutom_b)
+        tell_light_to(ACTION.CUSTOM)
+        time.sleep(0.05)
+
 
     def arrow_focus(self, R, G, B):
         for i in range(7):
