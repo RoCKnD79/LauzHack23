@@ -160,7 +160,8 @@ def addNewMultyPress(newKey):
         print("multi press")
         #call a function to trigger led
         #litra_ctrller.state = STATE.RELAX
-        Thread(target = litra_ctrller.splash, args=()).start()
+        #Thread(target = litra_ctrller.splash, args=()).start()
+        litra_ctrller.splash()
 
 
 def removeMultyPress(newKey):
