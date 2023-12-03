@@ -2,3 +2,5 @@ customtkinter
 packaging
 pillow
 language_tool_python
+numpy
+PyExecJS
