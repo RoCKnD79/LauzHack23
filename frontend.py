@@ -5,6 +5,7 @@ import customtkinter
 from PIL import Image
 import os
 
+
 customtkinter.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark", "Light"
 #customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
 
@@ -34,7 +35,9 @@ class App(customtkinter.CTk):
         self.edit_image = customtkinter.CTkImage(Image.open(current_path + "\images\edit_icon.png"))
         self.mouse_image = customtkinter.CTkImage(Image.open(current_path + "\images\mouse_icon.png"))
         self.settings_image = customtkinter.CTkImage(Image.open(current_path + "\images\settings_icon.png"))
-        #self.auto_icon = customtkinter.CTkImage(Image.open(current_path + "\images\auto_icon.png"))
+
+
+        self.auto_icon = customtkinter.CTkImage(Image.open(current_path + "\images\\brain_icon.png"))
         self.game_icon = customtkinter.CTkImage(Image.open(current_path + "\images\game_icon.png"))
         self.relax_icon = customtkinter.CTkImage(Image.open(current_path + "\images\\relax_icon.png"))
         self.sleep_icon = customtkinter.CTkImage(Image.open(current_path + "\images\sleep_icon.png"))
@@ -60,7 +63,7 @@ class App(customtkinter.CTk):
         self.sidebar_button_3.grid(row=3, column=0, padx=(30, 100), pady=20)
         self.sidebar_button_3.configure(text="Custom", font=customtkinter.CTkFont(size=25, weight="bold", ))
 
-        self.sidebar_button_4 = customtkinter.CTkButton(self.sidebar_frame, command=self.mode_button_event, fg_color="#212225", image=self.settings_image)
+        self.sidebar_button_4 = customtkinter.CTkButton(self.sidebar_frame, command=self.open_input_dialog_event, fg_color="#212225", image=self.settings_image)
         self.sidebar_button_4.grid(row=4, column=0, padx=(30, 100), pady=20)
         self.sidebar_button_4.configure(text="Option  ", font=customtkinter.CTkFont(size=25, weight="bold"))
 
@@ -88,7 +91,7 @@ class App(customtkinter.CTk):
         # self.logo_label = customtkinter.CTkLabel(self.main_frame, text="Menu", font=customtkinter.CTkFont(size=20, weight="bold"))
         # self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
 
-        self.main_button_1 = customtkinter.CTkButton(self.scrollable_frame, command=self.auto_button_event, width=150, height=150, image=self.game_icon)
+        self.main_button_1 = customtkinter.CTkButton(self.scrollable_frame, command=self.auto_button_event, width=150, height=150, image=self.auto_icon)
         self.main_button_1.grid(row=0, column=0, padx=(20, 10), pady=10)
         self.main_button_1.configure(text="Auto", font=customtkinter.CTkFont(size=15, weight="bold"))
         
@@ -161,11 +164,9 @@ class App(customtkinter.CTk):
         self.average_error_value = customtkinter.CTkLabel(self.slider_progressbar_frame, text="0", font=customtkinter.CTkFont(size=15, weight="bold"))
         self.average_error_value.grid(row=7, column=1, padx=0, pady=(0, 0))
 
+        self.auto_button_event()
 
 
-    def open_input_dialog_event(self):
-        dialog = customtkinter.CTkInputDialog(text="Type in a number:", title="CTkInputDialog")
-        print("CTkInputDialog:", dialog.get_input())
 
     def change_appearance_mode_event(self, new_appearance_mode: str):
         customtkinter.set_appearance_mode(new_appearance_mode)
@@ -189,6 +190,7 @@ class App(customtkinter.CTk):
         self.main_button_3.configure(fg_color="#212225")
         self.main_button_4.configure(fg_color="#212225")
         self.main_button_5.configure(fg_color="#212225")
+        self.display_auto_mode()
 
 
     def game_button_event(self):
@@ -197,6 +199,7 @@ class App(customtkinter.CTk):
         self.main_button_3.configure(fg_color="#212225")
         self.main_button_4.configure(fg_color="#212225")
         self.main_button_5.configure(fg_color="#212225")
+        self.display_game_mode()
 
 
     def work_button_event(self):
@@ -205,6 +208,7 @@ class App(customtkinter.CTk):
         self.main_button_3.configure(fg_color="#1388E5")
         self.main_button_4.configure(fg_color="#212225")
         self.main_button_5.configure(fg_color="#212225")
+        self.display_work_mode()
 
 
     def sleep_button_event(self):
@@ -213,6 +217,7 @@ class App(customtkinter.CTk):
         self.main_button_3.configure(fg_color="#212225")
         self.main_button_4.configure(fg_color="#1388E5")
         self.main_button_5.configure(fg_color="#212225")
+        self.display_sleep_mode()
 
 
     def relax_button_event(self):
@@ -221,6 +226,7 @@ class App(customtkinter.CTk):
         self.main_button_3.configure(fg_color="#212225")
         self.main_button_4.configure(fg_color="#212225")
         self.main_button_5.configure(fg_color="#1388E5")
+        self.display_relax_mode()
 
 
     def new_button_event(self):
@@ -232,8 +238,52 @@ class App(customtkinter.CTk):
         # self.main_button_6.configure(fg_color="#1388E5")
         pass
 
+    def open_input_dialog_event(self):
+        self.dialog = customtkinter.CTkInputDialog(text="Keyboard preferences", title="Option")
+        #self.dialog.configure()
         
+        self.age_label = customtkinter.CTkLabel(self.dialog, text="Age", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.age_label.grid(row=0, column=0, padx=0, pady=(0, 0))
+        # self.average_error_value2 = customtkinter.CTkLabel(self.dialog, text="0", font=customtkinter.CTkFont(size=15, weight="bold"))
+        # self.average_error_value2.grid(row=7, column=1, padx=0, pady=(0, 0))
+        #print("CTkInputDialog:", self.dialog.get_input())
 
+    def display_auto_mode(self):
+        self.main_auto_frame = customtkinter.CTkFrame(self, width=40, corner_radius=0, fg_color="#000000")
+        self.main_auto_frame.grid(row=1, column=1, rowspan=3, sticky="nsew",ipadx=70 ,ipady=0)
+        self.auto_textbox = customtkinter.CTkTextbox(self.main_auto_frame,width=500, height=70, font=customtkinter.CTkFont(size=15, weight="bold"), fg_color="#000000", bg_color="#000000")
+        self.auto_textbox.grid(row=0, column=0, padx=(20, 0), pady=(20, 40), sticky="nsew")
+        self.auto_textbox.insert("end", "Determines your mood continuously and adapts your embience optimally for the best possible user experience !")
+        switch = customtkinter.CTkSwitch(master=self.main_auto_frame, text=f"Music Recommendation" ,font=customtkinter.CTkFont(size=15, weight="bold"),)
+        switch.grid(row=1, column=0, padx=10, pady=(0, 20))
+        switch = customtkinter.CTkSwitch(master=self.main_auto_frame, text=f"Play Music                    ", font=customtkinter.CTkFont(size=15, weight="bold"),)
+        switch.grid(row=2, column=0, padx=10, pady=(0, 20))
+
+
+    def display_game_mode(self):
+        self.main_game_frame = customtkinter.CTkFrame(self, width=40, corner_radius=0, fg_color="#000000")
+        self.main_game_frame.grid(row=1, column=1, rowspan=3, sticky="nsew",ipadx=70 ,ipady=0)
+        self.game_textbox = customtkinter.CTkTextbox(self.main_auto_frame,width=500, height=70, font=customtkinter.CTkFont(size=15, weight="bold"), fg_color="#000000", bg_color="#000000")
+        self.game_textbox.grid(row=0, column=0, padx=(20, 0), pady=(20, 40), sticky="nsew")
+        self.game_textbox.insert("end", "")
+        self.game_label = customtkinter.CTkLabel(self.main_game_frame, text="Current game :", font=customtkinter.CTkFont(size=25, weight="bold"))
+        self.game_label.grid(row=1, column=0, padx=30, pady=(30,20))
+        self.game_label = customtkinter.CTkLabel(self.main_game_frame, text="Launch a game to see more option !", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.game_label.grid(row=2, column=0, padx=30, pady=(0,20))
+
+
+
+    def display_work_mode(self):
+        self.main_work_frame = customtkinter.CTkFrame(self, width=40, corner_radius=0, fg_color="green")
+        self.main_work_frame.grid(row=1, column=1, rowspan=3, sticky="nsew",ipadx=70 ,ipady=0)
+
+    def display_sleep_mode(self):
+        self.main_sleep_frame = customtkinter.CTkFrame(self, width=40, corner_radius=0, fg_color="yellow")
+        self.main_sleep_frame.grid(row=1, column=1, rowspan=3, sticky="nsew",ipadx=70 ,ipady=0)
+
+    def display_relax_mode(self):
+        self.main_relax_frame = customtkinter.CTkFrame(self, width=40, corner_radius=0, fg_color="pink")
+        self.main_relax_frame.grid(row=1, column=1, rowspan=3, sticky="nsew",ipadx=70 ,ipady=0)
 
 
 if __name__ == "__main__":

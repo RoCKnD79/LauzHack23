@@ -2,8 +2,9 @@ from pynput.keyboard import Key, Listener
 from pynput.mouse import Controller
 
 import time
-
 import numpy as np
+
+import light_interface
 
 mouse = Controller()
 
@@ -36,8 +37,13 @@ averageError = 0
 numberOfWords = 0
 numberOFErrors = 0
 
+#multy press
+MULTY_PRESS_TRIGER = 3
+keyCurrentlyPress = []
+
 
 def on_press(key):
+    addNewMultyPress(key)
     #print(key)
     global wasReleased, currentPress
     if not wasReleased :
@@ -60,6 +66,7 @@ def on_press(key):
 
    
 def on_release(key):
+    removeMultyPress(key)
     #print("released")
 
     global wasReleased, currentPress, speed
@@ -135,7 +142,25 @@ def detectError():
     if currentWordLength > 3 :
         numberOFErrors += 1
 
+"""
+Multy press
+"""
 
+def addNewMultyPress(newKey):
+    global keyCurrentlyPress, MULTY_PRESS_TRIGER
+    if newKey not in keyCurrentlyPress :
+        keyCurrentlyPress.append(newKey)
+
+    if len(keyCurrentlyPress) > MULTY_PRESS_TRIGER :
+        print("multi press")
+        #call a function to trigger led
+        light_interface.splash()
+
+
+def removeMultyPress(newKey):
+    global keyCurrentlyPress
+    if newKey in keyCurrentlyPress :
+        keyCurrentlyPress.remove(newKey)
 
 with Listener(on_press=on_press, on_release=on_release) as listener:
     listener.join()
