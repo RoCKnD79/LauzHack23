@@ -75,7 +75,7 @@ class LitraController():
     def splash(self):
         tell_light_to(ACTION.ANGER)
         time.sleep(0.05)
-        tell_light_to(None)
+        tell_light_to(self.state)
     
     def fade(self, R, G, B, period, in_state):
         if(period <= 0): 

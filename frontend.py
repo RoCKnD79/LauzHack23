@@ -131,19 +131,24 @@ class App(customtkinter.CTk):
         # self.slider_progressbar_frame.grid_columnconfigure(0, weight=1)
         # self.slider_progressbar_frame.grid_rowconfigure(4, weight=1)
 
-        self.mood_label = customtkinter.CTkLabel(self.slider_progressbar_frame, text="Mood", font=customtkinter.CTkFont(size=25, weight="bold"))
-        self.mood_label.grid(row=0, column=0, padx=(0,0), pady=(20,20))
+        self.mood_label = customtkinter.CTkLabel(self.slider_progressbar_frame, text="Your Mood", font=customtkinter.CTkFont(size=25, weight="bold"))
+        self.mood_label.grid(row=0, column=0, padx=(30,0), pady=(20,20))
 
         self.progressbar_1 = customtkinter.CTkProgressBar(self.slider_progressbar_frame, orientation="horizontal", width=130, height=12, progress_color="#4354be")
         self.progressbar_1.grid(row=1, column=1, padx=(0, 20))
+        self.progressbar_1.set(0.5)
         self.progressbar_2 = customtkinter.CTkProgressBar(self.slider_progressbar_frame, orientation="horizontal", width=130, height=12, progress_color="#0995e6")
         self.progressbar_2.grid(row=2, column=1, padx=(0, 20))
+        self.progressbar_2.set(0.1)
         self.progressbar_3 = customtkinter.CTkProgressBar(self.slider_progressbar_frame, orientation="horizontal", width=130, height=12, progress_color="#33cc33")
         self.progressbar_3.grid(row=3, column=1, padx=(0, 20))
+        self.progressbar_3.set(0.3)
         self.progressbar_4 = customtkinter.CTkProgressBar(self.slider_progressbar_frame, orientation="horizontal", width=130, height=12, progress_color="#d6cb22")
         self.progressbar_4.grid(row=4, column=1, padx=(0, 20))
+        self.progressbar_4.set(0.6)
         self.progressbar_5 = customtkinter.CTkProgressBar(self.slider_progressbar_frame, orientation="horizontal", width=130, height=12, progress_color="#ff0000")
         self.progressbar_5.grid(row=5, column=1, pady = (0,50), padx=(0, 20))
+        self.progressbar_5.set(0.8)
 
         self.happy_label    = customtkinter.CTkLabel(self.slider_progressbar_frame, text="Sleepy     ", font=customtkinter.CTkFont(size=15, weight="bold"))
         self.happy_label.grid(row=1, column=0,)
@@ -161,12 +166,12 @@ class App(customtkinter.CTk):
 
         self.taping_speed_label = customtkinter.CTkLabel(self.slider_progressbar_frame, text="Typing Speed", font=customtkinter.CTkFont(size=15, weight="bold"))
         self.taping_speed_label.grid(row=6, column=0, padx=0, pady=(0, 0))
-        self.taping_speed_value = customtkinter.CTkLabel(self.slider_progressbar_frame, text="0", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.taping_speed_value = customtkinter.CTkLabel(self.slider_progressbar_frame, text="58 words/min", font=customtkinter.CTkFont(size=15, weight="bold"))
         self.taping_speed_value.grid(row=6, column=1, padx=0, pady=(0, 0))
 
         self.average_error_label = customtkinter.CTkLabel(self.slider_progressbar_frame, text="Average Error", font=customtkinter.CTkFont(size=15, weight="bold"))
         self.average_error_label.grid(row=7, column=0, padx=0, pady=(0, 0))
-        self.average_error_value = customtkinter.CTkLabel(self.slider_progressbar_frame, text="0", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.average_error_value = customtkinter.CTkLabel(self.slider_progressbar_frame, text="0.15 Err/word", font=customtkinter.CTkFont(size=15, weight="bold"))
         self.average_error_value.grid(row=7, column=1, padx=0, pady=(0, 0))
 
         self.auto_button_event()
@@ -214,10 +219,10 @@ class App(customtkinter.CTk):
         self.main_button_4.configure(fg_color="#212225")
         self.main_button_5.configure(fg_color="#212225")
 
+        self.display_work_mode()
+
         self.litra_ctrller.state = STATE.WORK
         Thread(target = self.litra_ctrller.blue_focus, args=()).start()
-
-        self.display_work_mode()
 
 
     def sleep_button_event(self):
@@ -237,10 +242,10 @@ class App(customtkinter.CTk):
         self.main_button_4.configure(fg_color="#212225")
         self.main_button_5.configure(fg_color="#1388E5")
 
+        self.display_relax_mode()
+
         self.litra_ctrller.state = STATE.RELAX
         Thread(target = self.litra_ctrller.relax, args=()).start()
-
-        self.display_relax_mode()
 
 
     def new_button_event(self):
@@ -270,8 +275,8 @@ class App(customtkinter.CTk):
         self.auto_textbox.insert("end", "Determines your mood continuously and adapts your embience optimally for the best possible user experience !")
         switch = customtkinter.CTkSwitch(master=self.main_auto_frame, text=f"Music Recommendation" ,font=customtkinter.CTkFont(size=15, weight="bold"),)
         switch.grid(row=1, column=0, padx=10, pady=(0, 20))
-        switch = customtkinter.CTkSwitch(master=self.main_auto_frame, text=f"Play Music                    ", font=customtkinter.CTkFont(size=15, weight="bold"),)
-        switch.grid(row=2, column=0, padx=10, pady=(0, 20))
+        switch2 = customtkinter.CTkSwitch(master=self.main_auto_frame, text=f"Play Music                    ", font=customtkinter.CTkFont(size=15, weight="bold"),)
+        switch2.grid(row=2, column=0, padx=10, pady=(0, 20))
 
 
     def display_game_mode(self):
@@ -288,16 +293,51 @@ class App(customtkinter.CTk):
 
 
     def display_work_mode(self):
-        self.main_work_frame = customtkinter.CTkFrame(self, width=40, corner_radius=0, fg_color="green")
+        self.main_work_frame = customtkinter.CTkFrame(self, width=40, corner_radius=0, fg_color="#000000")
         self.main_work_frame.grid(row=1, column=1, rowspan=3, sticky="nsew",ipadx=70 ,ipady=0)
+        self.work_textbox = customtkinter.CTkTextbox(self.main_work_frame,width=500, height=70, font=customtkinter.CTkFont(size=15, weight="bold"), fg_color="#000000", bg_color="#000000")
+        self.work_textbox.grid(row=0, column=0, columnspan=3, padx=(10, 0), pady=(10, 20), sticky="nsew")
+        self.work_textbox.insert("end", "Stay focused on what you do for maximum productivity")
+        switch = customtkinter.CTkSwitch(master=self.main_work_frame, text=f"No music       " ,font=customtkinter.CTkFont(size=15, weight="bold"),)
+        switch.grid(row=1, column=0, padx=10, pady=(0, 20))
+        switch2 = customtkinter.CTkSwitch(master=self.main_work_frame, text=f"Do not disturb", font=customtkinter.CTkFont(size=15, weight="bold"),)
+        switch2.grid(row=2, column=0, padx=10, pady=(0, 20))
 
     def display_sleep_mode(self):
-        self.main_sleep_frame = customtkinter.CTkFrame(self, width=40, corner_radius=0, fg_color="yellow")
-        self.main_sleep_frame.grid(row=1, column=1, rowspan=3, sticky="nsew",ipadx=70 ,ipady=0)
+        self.main_sleep_frame = customtkinter.CTkFrame(self, width=40, corner_radius=0, fg_color="#000000")
+        self.main_sleep_frame.grid(row=1, column=1, rowspan=1, sticky="nsew",ipadx=10 ,ipady=0)
+        self.sleep_textbox = customtkinter.CTkTextbox(self.main_sleep_frame,width=500, height=100, font=customtkinter.CTkFont(size=15, weight="bold"), fg_color="#000000", bg_color="#000000")
+        self.sleep_textbox.grid(row=0, column=0, columnspan=3, padx=(10, 0), pady=(10, 20), sticky="nsew")
+        self.sleep_textbox.insert("end", "We take care of the embiance to improve your transition to a good night's sleep")
+        self.sleep_label = customtkinter.CTkLabel(self.main_sleep_frame, text="Go to sleep in :", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.sleep_label.grid(row=1, column=0, padx=20, pady=(10,20))
+        self.sleep_inputBox = customtkinter.CTkEntry(self.main_sleep_frame, width=10, font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.sleep_inputBox.grid(row=1, column=1, padx=20, pady=(10,20))
+        self.sleep_button = customtkinter.CTkButton(self.main_sleep_frame, command=self.sleep_transition, width=30, height=40,fg_color="#212225")
+        self.sleep_button.grid(row=1, column=2, padx=20, pady=(10,20))
+        self.sleep_button.configure(text="Start", font=customtkinter.CTkFont(size=15, weight="bold"))
+        switch = customtkinter.CTkSwitch(master=self.main_sleep_frame, text=f"Send a reminder" ,font=customtkinter.CTkFont(size=15, weight="bold"),)
+        switch.grid(row=2, column=0, padx=20, pady=(10, 20))
 
     def display_relax_mode(self):
-        self.main_relax_frame = customtkinter.CTkFrame(self, width=40, corner_radius=0, fg_color="pink")
+        self.main_relax_frame = customtkinter.CTkFrame(self, width=40, corner_radius=0, fg_color="#000000")
         self.main_relax_frame.grid(row=1, column=1, rowspan=3, sticky="nsew",ipadx=70 ,ipady=0)
+        self.relax_textbox = customtkinter.CTkTextbox(self.main_relax_frame,width=500, height=70, font=customtkinter.CTkFont(size=15, weight="bold"), fg_color="#000000", bg_color="#000000")
+        self.relax_textbox.grid(row=0, column=0, columnspan=3, padx=(10, 0), pady=(10, 20), sticky="nsew")
+        self.relax_textbox.insert("end", "Take a moment for yourself and relax")
+        switch = customtkinter.CTkSwitch(master=self.main_relax_frame, text=f"Music Recommendation" ,font=customtkinter.CTkFont(size=15, weight="bold"),)
+        switch.grid(row=1, column=0, padx=10, pady=(0, 20))
+        switch2 = customtkinter.CTkSwitch(master=self.main_relax_frame, text=f"Play Music                    ", font=customtkinter.CTkFont(size=15, weight="bold"),)
+        switch2.grid(row=2, column=0, padx=10, pady=(0, 20))
+
+    def sleep_transition(self):
+        #call function to start sleep transition
+
+        # self.litra_ctrller.state = STATE.RELAX
+        # Thread(target = self.litra_ctrller.relax, args=()).start()
+
+        # self.display_relax_mode()
+        pass
 
 
 if __name__ == "__main__":

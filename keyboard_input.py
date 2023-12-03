@@ -4,9 +4,14 @@ from pynput.mouse import Controller
 import time
 import numpy as np
 
-import light_interface
+from light_interface import *
+from threading import Thread
 
-mouse = Controller()
+#not used yet
+#mouse = Controller()
+
+#light interface
+litra_ctrller = LitraController()
 
 #only update one input
 wasReleased = True
@@ -154,7 +159,8 @@ def addNewMultyPress(newKey):
     if len(keyCurrentlyPress) > MULTY_PRESS_TRIGER :
         print("multi press")
         #call a function to trigger led
-        light_interface.splash()
+        #litra_ctrller.state = STATE.RELAX
+        Thread(target = litra_ctrller.splash, args=()).start()
 
 
 def removeMultyPress(newKey):
