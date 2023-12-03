@@ -12,12 +12,15 @@ def get_evolution_coefficient(df, feature):
     :param feature: feature
     :return: evolution coefficient
     """
+
+    if feature == 'mood':
+        return ''
     X = np.arange(len(df))
     Y = df[feature].values
     p = np.polyfit(X, Y, 1)
     return p[0]
 
-def detect_mood(avg_speed, avg_pressure, time_between_words, ratio_backspace, mouse_spammed, keyb_kick):
+def detect_mood(avg_speed, avg_pressure, ratio_backspace):#, time_between_words, mouse_spammed, keyb_kick):
     """
     This function takes the features extracted from the user's typing and mouse movements and returns a mood prediction.
     :param avg_speed: average speed of the user's typing
@@ -38,13 +41,12 @@ def detect_mood(avg_speed, avg_pressure, time_between_words, ratio_backspace, mo
     uptime = current_time - boot_time
 
     # We construct a new row with the features extracted from the user's typing and mouse movements
-    new_row = {'avg_speed': avg_speed, 'avg_pressure': avg_pressure, 'time_between_words': time_between_words,
-               'ratio_backspace': ratio_backspace, 'mood': ''}
+    new_row = pd.Series({'avg_speed': avg_speed, 'avg_pressure': avg_pressure,'ratio_backspace': ratio_backspace})#, 'time_between_words': time_between_words,'ratio_backspace': ratio_backspace, 'mood': ''}
     
     # We load the previous points of the user
-    df = pd.read_csv('data/points.csv')
+    df = pd.read_csv('data/mood_user.csv')
     mood = df['mood'].iloc[-1]
-    df = df.append(new_row, ignore_index=True)
+    df = pd.concat([df,new_row], ignore_index=True)
 
     # We get the mood set 10 points before
     previous_mood = df['mood'].iloc[-10]
@@ -53,7 +55,7 @@ def detect_mood(avg_speed, avg_pressure, time_between_words, ratio_backspace, mo
     # We compute the evolution coefficient of each feature
     evolution = {}
     for feature in df.columns:
-        evolution[feature] = get_evolution_coefficient(df, feature)
+        evolution[feature] = get_evolution_coefficient(df.iloc[:-10], feature)
 
     # Turn into a dictionary with the feature as key and the evolution coefficient as value
     evolution = dict(zip(df.columns, evolution.values()))
@@ -71,8 +73,8 @@ def detect_mood(avg_speed, avg_pressure, time_between_words, ratio_backspace, mo
         if previous_mood == 'happy':
             mood = 'neutral'
 
-    if mouse_spammed > 1 or keyb_kick > 1:
-        mood = 'angry'
+    '''if keyb_kick == 1:
+        mood = 'angry'''
 
     
     # We now check if he is happier
@@ -84,4 +86,5 @@ def detect_mood(avg_speed, avg_pressure, time_between_words, ratio_backspace, mo
     
     # We set the final mood
     df['mood'].iloc[-1] = mood
+    df.to_csv('data/mood_user.csv')
     return mood
